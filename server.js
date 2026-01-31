@@ -14,6 +14,57 @@ app.set("view engine", "ejs");
 
 app.set("views", path.join(__dirname, "src/views"));
 
+/**
+ * Configure Express middleware_ unit_2_ part1_ middleware in express_intro to middleware
+ */
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = NODE_ENV;
+    // Continue to the next middleware or route handler
+    next();
+});
+
+app.use((req, res, next) => {
+  // skip paths that start with "/."
+  if (req.path.startsWith("/.")) return next();
+  next();
+});
+
+// Middleware to add global data to all templates_ unit_2_ part1_ middleware in express_intro to middleware
+app.use((req, res, next) => {
+    // Add current year for copyright
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
+// time-based greeting middleware_UNIT2__intro to middleware
+app.use((req, res, next) => {
+  const hour = new Date().getHours(); // logic source
+
+  if (hour < 12) {
+    res.locals.greeting = "Good morning stranger";
+  } else if (hour < 18) {
+    res.locals.greeting = "Good afternoon ";
+  } else {
+    res.locals.greeting = "Good evening night owl";
+  }
+
+  next();
+});
+
+// Global middleware for random theme selection_unit2_part1_middleware in express_intro to middleware
+app.use((req, res, next) => {
+  const themes = ['blue-theme', 'green-theme', 'red-theme']; // values
+  res.locals.bodyClass = themes[Math.floor(Math.random() * themes.length)]; //bodyClass
+  next();
+});
+
+//make query parameters available to all templates
+app.use((req, res, next) => {
+  res.locals.queryParams = req.query || {}; // name: queryParams
+  next();
+});
+
 // Course data - place this after imports, before routes-UNIT_2
 const courses = {
     'CS121': {
@@ -51,6 +102,15 @@ const courses = {
     }
 };
 
+
+// Route-specific middleware that sets custom headers_UNIT2_part1_ 6. Create a Demo Page with Special Headers (Route-Specific Middleware)
+const addDemoHeaders = (req, res, next) => {
+  res.setHeader('X-Demo-Page', 'true'); // header name
+  res.setHeader('X-Middleware-Demo', 'This is a demo middleware'); // value can change
+  next();
+};
+
+
 app.get("/", (req, res) => {
   const title = "Welcome Home";
   res.render("home", { title });
@@ -61,9 +121,13 @@ app.get("/about", (req, res) => {
   res.render("about", { title });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Demo page route with header middleware_unit2_part1_6. Create a Demo Page with Special Headers (Route-Specific Middleware)
+app.get('/demo', addDemoHeaders, (req, res) => {
+  res.render('demo', {
+    title: 'Middleware Demo Page' // title text
+  });
 });
+
 
 // Course catalog list page- UNIT_2
 app.get('/catalog', (req, res) => {
@@ -147,4 +211,10 @@ app.use((err, req, res, next) => {
             res.status(status).send(`<h1>Error ${status}</h1><p>An error occurred.</p>`);
         }
     }
+});
+
+
+// REQUIRED: start the server (must be last)
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });

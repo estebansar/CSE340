@@ -5,6 +5,12 @@
         <p class="course-meta"><%= course.id %> • <%= course.credits %> credits</p>
         <p class="course-description"><%= course.description %></p>
     </div>
+            <!--display query parameters to prove middleware works_unit2_part1_Create query parameter helper middleware-->
+    <div class="query-params">
+        <p><strong>Query Parameters:</strong></p>
+         <pre><%= JSON.stringify(locals.queryParams, null, 2) %></pre> <!--queryParams -->
+    </div>
+
     <div class="sections">
         <div class="sections-header">
             <h2>Available Sections</h2>

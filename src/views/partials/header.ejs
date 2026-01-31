@@ -7,14 +7,16 @@
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/catalog.css">
 </head>
-<body>
+<body class="<%= bodyClass %>"> <!-- Unit2_part1_Add Theme Randomization Middleware_bodyClass -->
 
 <header>
+  <p><%- greeting %></p> <!--greeting_ Unit2_part1_ Create time based greeting middleware -->
   <nav>
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/about">About</a></li>
       <li><a href="/catalog">Course Catalog</a></li>
+      <li><a href="/demo">Middleware Demo</a></li>
     </ul>
   </nav>
 </header>
