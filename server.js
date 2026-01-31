@@ -74,23 +74,36 @@ app.get('/catalog', (req, res) => {
 });
 
 // Course detail page with route parameter- UNIT_2_"INTRO TO ROUTE PARAME"
-app.get('/catalog/:courseId', (req, res) => {
-    // Extract the course ID from the URL
+app.get('/catalog/:courseId', (req, res, next) => {
     const courseId = req.params.courseId;
-    // Look up the course in our data
     const course = courses[courseId];
-    // Handle course not found
     if (!course) {
         const err = new Error(`Course ${courseId} not found`);
         err.status = 404;
         return next(err);
     }
-    // Log the parameter for debugging
-    console.log('Viewing course:', courseId);
-    // Render the course detail template
+    // Get sort parameter (default to 'time')
+    const sortBy = req.query.sort || 'time';
+    // Create a copy of sections to sort
+    let sortedSections = [...course.sections];
+    // Sort based on the parameter
+    switch (sortBy) {
+        case 'professor':
+            sortedSections.sort((a, b) => a.professor.localeCompare(b.professor));
+            break;
+        case 'room':
+            sortedSections.sort((a, b) => a.room.localeCompare(b.room));
+            break;
+        case 'time':
+        default:
+            // Keep original time order as default
+            break;
+    }
+    console.log(`Viewing course: ${courseId}, sorted by: ${sortBy}`);
     res.render('course-detail', {
         title: `${course.id} - ${course.title}`,
-        course: course
+        course: { ...course, sections: sortedSections },
+        currentSort: sortBy
     });
 });
 
