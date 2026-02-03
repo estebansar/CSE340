@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
+    console.error(err);
     // Prevent infinite loops, if a response has already been sent, do nothing
     if (res.headersSent || res.finished) {
         return next(err);

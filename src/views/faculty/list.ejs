@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+
+<main>
+  <h1><%= title %></h1>
+
+  <p>Sort by:</p>
+  <ul>
+    <li><a href="/faculty?sort=name">Name</a></li>
+    <li><a href="/faculty?sort=department">Department</a></li>
+    <li><a href="/faculty?sort=title">Title</a></li>
+  </ul>
+
+  <h2>Faculty Members</h2>
+
+  <ul>
+    <% faculty.forEach(person => { %>
+      <li>
+        <a href="/faculty/<%= person.id %>"><%= person.name %></a><br>
+        <small><%= person.department %> | <%= person.title %></small>
+      </li>
+    <% }) %>
+  </ul>
+</main>
+
+<%- include('../partials/footer') %>
