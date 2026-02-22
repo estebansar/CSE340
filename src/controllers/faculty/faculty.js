@@ -1,10 +1,10 @@
 import { getFacultyById, getSortedFaculty } from '../../models/faculty/faculty.js';
 
 // Controller for the faculty list page
-const facultyListPage = (req, res, next) => {
+const facultyListPage = async (req, res, next) => {
   try {
     const sort = req.query.sort;
-    const facultyList = getSortedFaculty(sort);
+    const facultyList = await getSortedFaculty(sort);
 
     res.render('faculty/list', {
       title: 'Faculty Directory',
@@ -16,14 +16,14 @@ const facultyListPage = (req, res, next) => {
 };
 
 // Controller for the faculty detail page
-const facultyDetailPage = (req, res, next) => {
+// Controller for the faculty detail page
+const facultyDetailPage = async (req, res, next) => {
   try {
     const { facultyId } = req.params;
-    console.log('facultyId param:', facultyId);
-    const facultyMember = getFacultyById(facultyId);
-    console.log('facultyMember found:', facultyMember);
 
-    if (!facultyMember) {
+    const facultyMember = await getFacultyById(facultyId);
+
+    if (!facultyMember || Object.keys(facultyMember).length === 0) {
       const error = new Error('Faculty member not found');
       error.status = 404;
       throw error;
@@ -37,5 +37,4 @@ const facultyDetailPage = (req, res, next) => {
     next(error);
   }
 };
-
 export { facultyListPage, facultyDetailPage };
