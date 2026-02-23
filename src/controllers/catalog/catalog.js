@@ -5,6 +5,8 @@ import { getSectionsByCourseSlug } from '../../models/catalog/catalog.js';
 const catalogPage = async (req, res) => {
     // Model functions are async, so we must await them
     const courses = await getAllCourses();
+
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">', 10); // Unit3_refractor_ NEW LINE
     
     res.render('catalog', {
         title: 'Course Catalog',
@@ -32,7 +34,8 @@ const courseDetailPage = async (req, res, next) => {
     const sortBy = req.query.sort || 'time';
     const sections = await getSectionsByCourseSlug(courseSlug, sortBy);
     
-    
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">', 10); // Unit3_refactor_NEW LINE
+
     res.render('course-detail', {
         title: `${course.courseCode} - ${course.name}`,
         course: course,

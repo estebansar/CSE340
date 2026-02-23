@@ -6,6 +6,8 @@ const facultyListPage = async (req, res, next) => {
     const sort = req.query.sort;
     const facultyList = await getSortedFaculty(sort);
 
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">', 10); //unit3_ refactor_ new
+
     res.render('faculty/list', {
       title: 'Faculty Directory',
       faculty: facultyList,
@@ -28,6 +30,8 @@ const facultyDetailPage = async (req, res, next) => {
       error.status = 404;
       throw error;
     }
+
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">', 10); //unit3_ refactor_ new
 
     res.render('faculty/detail', {
       title: facultyMember.name,
