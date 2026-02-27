@@ -32,6 +32,15 @@ const setupDatabase = async () => {
     
     if (hasData) {
         console.log('Database already seeded');
+
+     // Ensure practice.sql runs even when database is already seeded (Unit 3 Contact Form)
+        const practicePath = join(__dirname, 'sql', 'practice.sql');
+         if (fs.existsSync(practicePath)) {
+            const practiceSQL = fs.readFileSync(practicePath, 'utf8');
+            await db.query(practiceSQL);
+            console.log('Practice database tables initialized');
+        }        
+        //end//
         return true;
     }
     
@@ -40,6 +49,15 @@ const setupDatabase = async () => {
     const seedPath = join(__dirname, 'sql', 'seed.sql');
     const seedSQL = fs.readFileSync(seedPath, 'utf8');
     await db.query(seedSQL);
+
+    // Run practice.sql if it exists (for student assignments) -UNit2 _part 2_Building Your First Form: Contact Us
+    const practicePath = join(__dirname, 'sql', 'practice.sql');
+    if (fs.existsSync(practicePath)) {
+        const practiceSQL = fs.readFileSync(practicePath, 'utf8');
+        await db.query(practiceSQL);
+        console.log('Practice database tables initialized');
+    }
+    // final//
     console.log('Database seeded successfully');
     
     return true;

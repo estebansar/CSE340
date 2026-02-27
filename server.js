@@ -27,6 +27,13 @@ const app = express();
  */
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+
+// Parse form data (Unit 3 Contact Form)
+app.use(express.urlencoded({ extended: true }));
+//end//
+//unit 3_part 2_Building Your First Form: Contact Us//
+app.use(express.json());
+//end//
 app.set('views', path.join(__dirname, 'src/views'));
 
 /**

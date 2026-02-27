@@ -6,6 +6,10 @@ const homePage = (req, res) => {
 const aboutPage = (req, res) => {
     res.render('about', { title: 'About' });
 };
+// unit3_part2_Building Your First Form: Contact Us//
+const contactPage = (req, res) => {
+    res.render('contact', { title: 'Contact' });
+};
 
 const demoPage = (req, res) => {
     res.render('demo', { title: 'Middleware Demo Page' });
@@ -17,4 +21,4 @@ const testErrorPage = (req, res, next) => {
     next(err);
 };
 
-export { homePage, aboutPage, demoPage, testErrorPage };
+export { homePage, aboutPage, contactPage, demoPage, testErrorPage };// unit3_part2_Building Your First Form: Contact Us_added contactpage//
