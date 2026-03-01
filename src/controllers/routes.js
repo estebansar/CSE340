@@ -21,11 +21,23 @@ import { saveContactForm } from '../models/contact-model.js';
 // Create a new router instance
 const router = Router();
 
+// Add registration-specific styles to all registration routes_unit3_part 2_Set Up Dynamic CSS Loading
+router.use('/register', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/registration.css">');
+    next();
+});
+
 //ROUTES GO BELOW
 // Home and basic pages
 router.get('/', homePage);
 router.get('/about', aboutPage);
 router.get('/contact', contactPage); // adding facultylist page and facultydetail page_unit3_ part 2_ Building Your First Form: Contact Us//
+
+// Registration page (Unit 3_ part2_ Building a User Registration System//
+router.get('/register', (req, res) => {
+    res.render('register', { title: 'Register' });
+});
+//end//
 
 // POST route for contact form submission
 router.post(
