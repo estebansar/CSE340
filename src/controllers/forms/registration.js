@@ -68,18 +68,18 @@ const processRegistration = async (req, res) => {
         }
 
         // Hash the password before saving to database
-        // TODO: Use bcrypt.hash(password, 10) to hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
         // TODO: Store the result in a variable called hashedPassword
 
         // Save user to database with hashed password
-        // TODO: Call saveUser(name, email, hashedPassword)
+        await saveUser(name, email, hashedPassword);
 
         // TODO: Log success message to console
-        // TODO: Redirect to /register/list to show successful registration
-        // NOTE: Later when we add authentication, we'll change this to require login first
+        console.log('User registered successfully');
+        return res.redirect('/register/list');
     } catch (error) {
-        // TODO: Log the error to console
-        // TODO: Redirect back to /register
+        console.log(error);// TODO: Log the error to console
+        return res.redirect('/register');// TODO: Redirect back to /register
     }
 };
 
@@ -91,12 +91,21 @@ const showAllUsers = async (req, res) => {
     let users = [];
 
     try {
-        // TODO: Call getAllUsers() and assign to users variable
+        users = await getAllUsers();  // TODO: Call getAllUsers() and assign to users variable
     } catch (error) {
-        // TODO: Log the error to console
-        // users remains empty array on error
+        console.log(error);// TODO: Log the error to console
+        return res.redirect('/register');// users remains empty array on error
     }
 
-    // TODO: Render the users list view (forms/registration/list)
-    // TODO: Pass title: 'Registered Users' and the users variable in the data object
+    res.render('forms/registration/list', {  // TODO: Render the users list view (forms/registration/list)
+        title: 'Registered Users',  // TODO: Pass title: 'Registered Users' and the users variable in the data object
+        users
+    });
+
 };
+
+router.get('/', showRegistrationForm);
+router.post('/', registrationValidation, processRegistration);
+router.get('/list', showAllUsers);
+
+export default router;

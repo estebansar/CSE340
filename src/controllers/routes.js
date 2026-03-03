@@ -16,7 +16,9 @@ import { body, validationResult } from 'express-validator';
 //end//
 
 import { saveContactForm } from '../models/contact-model.js';
-
+// unit3_part 2_ building your first form:contact us//
+import registrationRouter from './forms/registration.js';
+// end//
 
 // Create a new router instance
 const router = Router();
@@ -34,9 +36,12 @@ router.get('/about', aboutPage);
 router.get('/contact', contactPage); // adding facultylist page and facultydetail page_unit3_ part 2_ Building Your First Form: Contact Us//
 
 // Registration page (Unit 3_ part2_ Building a User Registration System//
-router.get('/register', (req, res) => {
-    res.render('register', { title: 'Register' });
-});
+//router.get('/register', (req, res) => {
+    //res.render('register', { title: 'Register' });
+//});
+//end//
+// adding facultylist page and facultydetail page_unit3_ part 2_
+router.use('/register', registrationRouter);
 //end//
 
 // POST route for contact form submission
