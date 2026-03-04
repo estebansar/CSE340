@@ -40,24 +40,59 @@
 
         <!-- Email confirmation field -->
         <!-- TODO: Create form-group div for emailConfirm -->
+        <div class="form-group">
         <!-- TODO: Should match email field structure -->
+            <label for="emailConfirm">Confirm Email Address</label>
         <!-- TODO: Use name="emailConfirm" -->
+            <input
+                type="email"
+                id="emailConfirm"
+                name="emailConfirm"
+                required
+                placeholder="Confirm your email">
+        </div>
 
         <!-- Password field -->
         <!-- TODO: Create form-group div -->
+        <div class="form-group">
         <!-- TODO: Add label for password -->
+            <label for="password">Password</label>
         <!-- TODO: Add input type="password" -->
         <!-- TODO: Add minlength="8" and required attributes -->
         <!-- TODO: Add pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*" for validation -->
-        <!-- TODO: Add a div with class="help-text" explaining requirements -->
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                required
+                pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*">
         <!-- HINT: "Must be at least 8 characters with a number and special character" -->
+            <div class="help-text">
+                Must be at least 8 characters with a number and special character
+            </div>
+        </div>
 
         <!-- Password confirmation field -->
         <!-- TODO: Similar to password field but for passwordConfirm -->
-        <!-- TODO: Use name="passwordConfirm" and appropriate label -->
+        <div class="form-group">
+             <!-- TODO: Use name="passwordConfirm" and appropriate label -->
+              <label for="passwordConfirm">Confirm Password</label>
+
+              <input
+                type="password"
+                id="passwordConfirm"
+                name="passwordConfirm"
+                minlength="8"
+                required
+                placeholder="Confirm Password">
+        </div>
 
         <!-- Submit button -->
         <!-- TODO: Add button type="submit" with text like "Create Account" -->
+        <div class="form-group">
+            <button type="submit">Create Account</button>
+        </div>
     </form>
 </main>
 <%- include('../../partials/footer') %>
