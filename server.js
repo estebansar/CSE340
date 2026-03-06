@@ -1,10 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { setupDatabase, testConnection } from './src/models/setup.js';
-import "dotenv/config";
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';  // Parse form data (Unit 3 Contact Form)
-import pgSession from 'connect-pg-simple';   // unit3_part2_ login form
+import connectPgSimple from 'connect-pg-simple';   // unit3_part2_ login form
+import { caCert } from './src/models/db.js';   // unit3_part2_login form
 
 // Import MVC components
 import routes from './src/controllers/routes.js';
@@ -18,11 +21,40 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
+console.log('SESSION_SECRET loaded:', Boolean(process.env.SESSION_SECRET));
 
 /**
  * Setup Express Server
  */
 const app = express();
+
+// Session Middleware (Unit 3 Login Form)
+const pgSession = connectPgSimple(session);
+
+app.use(session({
+  store: new pgSession({
+    conObject: {
+      connectionString: process.env.DB_URL,
+      ssl: {
+        ca: caCert,
+        rejectUnauthorized: true,
+        checkServerIdentity: () => { return undefined; }
+      }
+    },
+    tableName: 'session',
+    createTableIfMissing: true
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: NODE_ENV.includes('dev') !== true,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+
+//ended//
 
 /**
  * Configure Express
@@ -37,6 +69,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //end//
 app.set('views', path.join(__dirname, 'src/views'));
+
+
+//ended//
 
 /**
  * Global Middleware
