@@ -3,6 +3,8 @@ import "dotenv/config";
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import session from 'express-session';  // Parse form data (Unit 3 Contact Form)
+import pgSession from 'connect-pg-simple';   // unit3_part2_ login form
 
 // Import MVC components
 import routes from './src/controllers/routes.js';
