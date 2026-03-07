@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';  // Parse form data (Unit 3 Contact Form)
 import connectPgSimple from 'connect-pg-simple';   // unit3_part2_ login form
 import { caCert } from './src/models/db.js';   // unit3_part2_login form
+import { startSessionCleanup } from './src/utils/session-cleanup.js'; // Unit3_Part2_Login Form_Session Cleanup
 
 // Import MVC components
 import routes from './src/controllers/routes.js';
@@ -55,6 +56,8 @@ app.use(session({
 }));
 
 //ended//
+
+startSessionCleanup(); // Unit3_Part2_Login Form_Session Cleanup Start
 
 /**
  * Configure Express
