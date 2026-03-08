@@ -19,6 +19,9 @@ import { saveContactForm } from '../models/contact-model.js';
 // unit3_part 2_ building your first form:contact us//
 import registrationRouter from './forms/registration.js';
 // end//
+import loginRoutes from './forms/login.js';
+import { processLogout, showDashboard } from './forms/login.js';
+import { requireLogin } from '../middleware/auth.js';
 
 // Create a new router instance
 const router = Router();
@@ -35,16 +38,19 @@ router.get('/', homePage);
 router.get('/about', aboutPage);
 router.get('/contact', contactPage); // adding facultylist page and facultydetail page_unit3_ part 2_ Building Your First Form: Contact Us//
 
-// Registration page (Unit 3_ part2_ Building a User Registration System//
-//router.get('/register', (req, res) => {
-    //res.render('register', { title: 'Register' });
-//});
+// Login routes (form and submission)
+router.use('/login', loginRoutes);
+
+// Authentication-related routes at root level
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
 //end//
+
 // adding facultylist page and facultydetail page_unit3_ part 2_
 router.use('/register', registrationRouter);
 //end//
 
-// POST route for contact form submission
+// POST route for contact form submissionAC
 router.post(
     '/contact',
     [
