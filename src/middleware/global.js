@@ -67,6 +67,10 @@ const addLocalVariables = (req, res, next) => {
     const randomTheme = themes[Math.floor(Math.random() * themes.length)];
     res.locals.bodyClass = randomTheme;
 
+    // Unit3_Part2_Login Form_Expose Session State
+    res.locals.loggedIn = Boolean(req.session?.user);
+    res.locals.sessionUser = req.session?.user || null;
+    //ended//
     // Continue to the next middleware or route handler
     next();
 };
