@@ -11,6 +11,12 @@
 
 <header>
   <p><%- greeting %></p> <!--greeting_ Unit2_part1_ Create time based greeting middleware -->
+  <!-- Flash message -->
+  <% if (message && message.length > 0) { %>
+  <div class="flash-message"> 
+        <%= message[0] %>
+    </div>
+  <% } %>
   <nav>
 <nav>
     <ul>

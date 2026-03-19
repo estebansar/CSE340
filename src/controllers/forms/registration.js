@@ -63,8 +63,8 @@ const processRegistration = async (req, res) => {
 
         if (emailAlreadyExists) {
             console.log('Email already registered');
+            req.flash("notice", "Email is already registered.")
             return res.redirect('/register')
-            return;
         }
 
         // Hash the password before saving to database
@@ -76,6 +76,7 @@ const processRegistration = async (req, res) => {
 
         // TODO: Log success message to console
         console.log('User registered successfully');
+        req.flash("notice", "User registered successfully.") // Unit 4 - Flash message
         return res.redirect('/register/list');
     } catch (error) {
         console.log(error);// TODO: Log the error to console

@@ -74,6 +74,11 @@ const addLocalVariables = (req, res, next) => {
         res.locals.isLoggedIn = true;
     }
     //ended//
+
+    // Unit 4 - Flash message made available to all views
+    res.locals.message = req.flash("notice") // "notice"
+    //ended//
+
     // Continue to the next middleware or route handler
     next();
 };

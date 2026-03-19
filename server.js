@@ -6,6 +6,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';  // Parse form data (Unit 3 Contact Form)
+import flash from "connect-flash" //unit4 _part 1//
 import connectPgSimple from 'connect-pg-simple';   // unit3_part2_ login form
 import { caCert } from './src/models/db.js';   // unit3_part2_login form
 import { startSessionCleanup } from './src/utils/session-cleanup.js'; // Unit3_Part2_Login Form_Session Cleanup
@@ -56,6 +57,8 @@ app.use(session({
 }));
 
 //ended//
+
+app.use(flash()) // Unit 4 - Flash messaging
 
 startSessionCleanup(); // Unit3_Part2_Login Form_Session Cleanup Start
 

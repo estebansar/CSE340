@@ -17,3 +17,14 @@ body.green-theme {
 body.red-theme {
   background-color: #fdecea;
 }
+
+/* Flash message style */
+.flash-message {
+    background: #ffe0e0;
+    color: #900;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #900;
+    border-radius: 6px;
+    font-weight: bold;
+}
