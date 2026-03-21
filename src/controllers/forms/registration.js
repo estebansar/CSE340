@@ -51,6 +51,11 @@ const processRegistration = async (req, res) => {
 
     if (!errors.isEmpty()) {
         console.log(errors.array());
+
+        errors.array().forEach(error => {
+            req.flash('notice', error.msg)
+        })
+        
         return res.redirect('/register');
     }
 
