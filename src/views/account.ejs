@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<main>
+    <div class="dashboard">
+        <h1>Account Management</h1>
+        <p>
+            Manage your account information below.
+        </p>
+
+        <div class="user-info">
+            <h2>Your Current Information</h2>
+
+            <div class="user-detail">
+                <span class="label">Name:</span>
+                <span class="value"><%= user.name %></span>
+            </div>
+
+            <div class="user-detail">
+                <span class="label">Email:</span>
+                <span class="value"><%= user.email %></span>
+            </div>
+
+            <div class="user-detail">
+                <span class="label">Member Since:</span>
+                <span class="value"><%= new Date(user.created_at).toLocaleDateString() %></span>
+            </div>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/dashboard">Back to Dashboard</a>
+        </div>
+    </div>
+</main>
+<%- include('partials/footer') %>

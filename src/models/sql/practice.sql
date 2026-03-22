@@ -16,6 +16,27 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Unit 4: Roles table for account management
+CREATE TABLE IF NOT EXISTS roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Add role_id column to users table (if not exists)
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS role_id INTEGER REFERENCES roles(id);
+
+-- Seed default roles
+INSERT INTO roles (name)
+VALUES ('user'), ('admin')
+ON CONFLICT (name) DO NOTHING;
+
+-- Set all existing users to default "user" role
+UPDATE users
+SET role_id = (SELECT id FROM roles WHERE name = 'user')
+WHERE role_id IS NULL;

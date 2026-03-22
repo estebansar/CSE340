@@ -38,7 +38,13 @@ const registrationValidation = [
  */
 const showRegistrationForm = (req, res) => {
     res.render('forms/registration/form', {
-        title: 'User Registration'
+        title: 'User Registration',
+        errors: [],
+        formData: { 
+            name: '',
+            email: '',
+            emailConfirm: ''
+        }
     });
 };
 
@@ -52,11 +58,17 @@ const processRegistration = async (req, res) => {
     if (!errors.isEmpty()) {
         console.log(errors.array());
 
-        errors.array().forEach(error => {
-            req.flash('notice', error.msg)
+        return res.status(400).render('forms/registration/form', {
+            title: 'User Registration',
+            errors: errors.array().map(error => error.msg),
+            formData: {
+                name: req.body.name,
+                email: req.body.email,
+                emailConfirm: req.body.emailConfirm
+            }
+
         })
-        
-        return res.redirect('/register');
+    
     }
 
     // Extract validated data from request body

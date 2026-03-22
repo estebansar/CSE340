@@ -135,10 +135,23 @@ const showDashboard = (req, res) => {
     // TODO: Pass title: 'Dashboard', user, and sessionData to template
 };
 
+
+/**
+ * Display account management page.
+ */
+const showAccount = (req, res) => {
+    const user = req.session.user;
+
+    res.render('account', {
+        title: 'Account Management',
+        user
+    });
+};
+
 // Routes
 router.get('/', showLoginForm);
 router.post('/', loginValidation, processLogin);
 
 // Export router as default, and specific functions for root-level routes
 export default router;
-export { processLogout, showDashboard };
+export { processLogout, showDashboard, showAccount };

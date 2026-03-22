@@ -20,7 +20,7 @@ import { saveContactForm } from '../models/contact-model.js';
 import registrationRouter from './forms/registration.js';
 // end//
 import loginRoutes from './forms/login.js';
-import { processLogout, showDashboard } from './forms/login.js';
+import { processLogout, showDashboard, showAccount } from './forms/login.js';
 import { requireLogin } from '../middleware/auth.js';
 
 // Create a new router instance
@@ -44,6 +44,7 @@ router.use('/login', loginRoutes);
 // Authentication-related routes at root level
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard);
+router.get('/account', requireLogin, showAccount);
 //end//
 
 // adding facultylist page and facultydetail page_unit3_ part 2_
