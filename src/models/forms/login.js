@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import db from '../db.js';
 
+
 /**
  * Find a user by email address for login verification.
  * 
@@ -9,12 +10,22 @@ import db from '../db.js';
  */
 const findUserByEmail = async (email) => {
     const result = await db.query(
-        'SELECT id, name, email, password, role, created_at FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1',
+        `SELECT 
+            u.id,
+            u.name,
+            u.email,
+            u.password,
+            u.created_at,
+            r.name AS role
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        WHERE LOWER(u.email) = LOWER($1)
+        LIMIT 1`,
         [email]
     );
 
     return result.rows[0] || null;
-};// TODO: Execute query and return first row or null
+};
 
 /**
  * Verify a plain text password against a stored bcrypt hash.

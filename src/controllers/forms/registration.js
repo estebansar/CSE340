@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
-import { emailExists, saveUser, getAllUsers } from '../../models/forms/registration.js';
+import { emailExists, saveUser, getAllUsers, getUserById, updateUserById } from '../../models/forms/registration.js';
 
 const router = Router();
 
@@ -122,8 +122,89 @@ const showAllUsers = async (req, res) => {
 
 };
 
+
+/**
+ * Show edit account form
+ */
+const showEditUser = async (req, res) => { 
+
+    const userId = req.params.id; 
+
+    try {
+        const user = await getUserById(userId); 
+
+        if (!user) {
+            return res.redirect('/register/list'); 
+        }
+
+        res.render('forms/registration/edit', { 
+            title: 'Edit Account', 
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.redirect('/register/list');
+    }
+};
+
+/**
+ * Process account update
+ */
+const processEditUser = async (req, res) => { 
+
+    const userId = req.params.id; 
+    const errors = validationResult(req); 
+
+    if (!errors.isEmpty()) {
+        return res.status(400).render('forms/registration/edit', { 
+            title: 'Edit Account', 
+            errors: errors.array().map(error => error.msg), 
+            user: {
+                id: req.params.id, 
+                name: req.body.name, 
+                email: req.body.email 
+            }
+        });
+    }
+
+    const { name, email } = req.body; 
+
+    try {
+        await updateUserById(userId, name, email); 
+
+        req.flash('notice', 'User updated successfully'); 
+        return res.redirect('/register/list'); 
+
+    } catch (error) {
+        console.log(error);
+        return res.redirect('/register/list');
+    }
+};
+
+/**
+ * Validation rules for editing user accounts
+ */
+const editValidation = [
+    body('name')
+        .trim()
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Name must be between 2 and 100 characters') 
+        .matches(/^[a-zA-Z\s'-]+$/)
+        .withMessage('Name can only contain letters, spaces, hyphens, and apostrophes'), 
+    body('email')
+        .trim()
+        .isEmail()
+        .normalizeEmail()
+        .withMessage('Must be a valid email address') 
+        .isLength({ max: 255 })
+        .withMessage('Email address is too long') 
+];
+
 router.get('/', showRegistrationForm);
 router.post('/', registrationValidation, processRegistration);
 router.get('/list', showAllUsers);
+router.get('/edit/:id', showEditUser); // route path and function
+router.post('/edit/:id', editValidation, processEditUser);
 
 export default router;

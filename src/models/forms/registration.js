@@ -47,4 +47,26 @@ const getAllUsers = async () => {
     return result.rows;
 };
 
-export { emailExists, saveUser, getAllUsers };
+const getUserById = async (id) => { // unit 4_part 1
+    const query = `
+        SELECT id, name, email, role_id, created_at
+        FROM users
+        WHERE id = $1
+    `;
+    const result = await db.query(query, [id]);
+    return result.rows[0];
+};
+
+const updateUserById = async (id, name, email) => { 
+    const query = `
+        UPDATE users
+        SET name = $2,
+            email = $3
+        WHERE id = $1
+        RETURNING id, name, email, role_id, created_at
+    `;
+    const result = await db.query(query, [id, name, email]);
+    return result.rows[0];
+};
+
+export { emailExists, saveUser, getAllUsers, getUserById, updateUserById };

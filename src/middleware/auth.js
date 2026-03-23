@@ -15,4 +15,19 @@ const requireLogin = (req, res, next) => {
     }
 };
 
-export { requireLogin };
+const requireRole = (roleName) => { // ✅ roleName can be changed
+    return (req, res, next) => {
+
+        if (!req.session || !req.session.user) {
+            return res.redirect('/login'); // ❌ route should stay
+        }
+
+        if (req.session.user.role !== roleName) {
+            return res.status(403).send('Forbidden'); // ❌ message can stay simple
+        }
+
+        next();
+    };
+};
+
+export { requireLogin, requireRole };
