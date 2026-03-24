@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { emailExists, saveUser, getAllUsers, getUserById, updateUserById } from '../../models/forms/registration.js';
+import { requireLogin } from '../../middleware/auth.js';
 
 const router = Router();
 
@@ -124,34 +125,37 @@ const showAllUsers = async (req, res) => {
 
 
 /**
- * Show edit account form
+ * Display the edit account form
+ * Users can edit their own account, admins can edit any account
  */
-const showEditUser = async (req, res) => { 
+const showEditAccountForm = async (req, res) => { 
+    const targetUserId = parseInt(req.params.id); 
+    const currentUser = req.session.user; 
 
-    const userId = req.params.id; 
-
-    try {
-        const user = await getUserById(userId); 
-
-        if (!user) {
-            return res.redirect('/register/list'); 
-        }
-
-        res.render('forms/registration/edit', { 
-            title: 'Edit Account', 
-            user
-        });
-
-    } catch (error) {
-        console.log(error);
-        return res.redirect('/register/list');
+    const targetUser = await getUserById(targetUserId); 
+    if (!targetUser) {
+        req.flash('error', 'User not found.'); 
+        return res.redirect('/register/list'); 
     }
+
+    console.log('EDIT CHECK:', { currentUser, targetUserId }); // ✅ temporary debug
+
+    const canEdit = currentUser.id === targetUserId || currentUser.role === 'admin'; 
+    if (!canEdit) {
+        req.flash('error', 'You do not have permission to edit this account.'); 
+        return res.redirect('/register/list'); 
+    }
+
+    return res.render('forms/registration/edit', { 
+        title: 'Edit Account', 
+        user: targetUser 
+    });
 };
 
 /**
  * Process account update
  */
-const processEditUser = async (req, res) => { 
+const processEditAccount = async (req, res) => { 
 
     const userId = req.params.id; 
     const errors = validationResult(req); 
@@ -204,7 +208,7 @@ const editValidation = [
 router.get('/', showRegistrationForm);
 router.post('/', registrationValidation, processRegistration);
 router.get('/list', showAllUsers);
-router.get('/edit/:id', showEditUser); // route path and function
-router.post('/edit/:id', editValidation, processEditUser);
+router.get('/:id/edit', requireLogin, showEditAccountForm); 
+router.post('/:id/edit', requireLogin, editValidation, processEditAccount);
 
 export default router;

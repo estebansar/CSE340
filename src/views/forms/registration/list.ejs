@@ -34,6 +34,11 @@
                              <div class="value"><%= new Date(user.created_at).toLocaleDateString() %></div>
                         </div>
                     </div>
+
+                    <div class="user-actions">      
+                        <a href="/register/<%= user.id %>/edit">Edit</a> <!-- unit4_part1-->
+                    </div>
+
                 </div>
 
             <!-- TODO: End the forEach loop -->

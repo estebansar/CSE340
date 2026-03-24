@@ -32,6 +32,11 @@ router.use('/register', (req, res, next) => {
     next();
 });
 
+router.use('/register', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/users.css">'); //Unit4_part1
+    next();
+});
+
 //ROUTES GO BELOW
 // Home and basic pages
 router.get('/', homePage);
