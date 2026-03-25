@@ -47,14 +47,20 @@ const getAllUsers = async () => {
     return result.rows;
 };
 
-const getUserById = async (id) => { // unit 4_part 1
+const getUserById = async (id) => { 
     const query = `
-        SELECT id, name, email, role_id, created_at
-        FROM users
-        WHERE id = $1
+        SELECT
+            u.id,
+            u.name,
+            u.email,
+            u.created_at,
+            r.name AS role
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        WHERE u.id = $1
     `;
     const result = await db.query(query, [id]);
-    return result.rows[0];
+    return result.rows[0] || null;
 };
 
 const updateUserById = async (id, name, email) => { 

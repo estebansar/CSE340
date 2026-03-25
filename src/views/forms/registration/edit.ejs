@@ -1,0 +1,23 @@
+<%- include('../../partials/header') %>
+
+<main>
+    <h1>Edit Account</h1>
+
+    <form method="POST" action="/register/<%= user.id %>/edit"
+
+        <div>
+            <label>Name</label>
+            <input type="text" name="name" value="<%= user.name %>">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" name="email" value="<%= user.email %>">
+        </div>
+
+        <button type="submit">Update</button>
+
+    </form>
+</main>
+
+<%- include('../../partials/footer') %>
