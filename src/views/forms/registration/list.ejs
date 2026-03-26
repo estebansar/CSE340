@@ -26,6 +26,11 @@
                         </div>
 
                         <div class="detail-item">
+                            <div class="label">Role</div> <!-- unit4_part 1_account management -->
+                            <div class="value"><%= user.role %></div>
+                        </div>
+
+                        <div class="detail-item">
                             <!-- TODO: Add div with class="label" containing: Registered -->
                              <div class="label">Registered</div>
 
@@ -36,7 +41,12 @@
                     </div>
 
                     <div class="user-actions">      
-                        <a href="/register/<%= user.id %>/edit">Edit</a> <!-- unit4_part1-->
+                        <a href="/register/<%= user.id %>/edit">Edit</a>
+
+                        <!-- NEW delete form -->
+                        <form method="POST" action="/register/<%= user.id %>/delete" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
                     </div>
 
                 </div>

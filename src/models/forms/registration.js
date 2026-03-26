@@ -39,9 +39,15 @@ const saveUser = async (name, email, hashedPassword) => {
  */
 const getAllUsers = async () => {
     const query = `
-        SELECT id, name, email, created_at
-        FROM users
-        ORDER BY created_at DESC
+        SELECT
+            u.id,
+            u.name,
+            u.email,
+            u.created_at,
+            r.name AS role
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        ORDER BY u.created_at DESC  
     `;
     const result = await db.query(query);
     return result.rows;
@@ -75,4 +81,10 @@ const updateUserById = async (id, name, email) => {
     return result.rows[0];
 };
 
-export { emailExists, saveUser, getAllUsers, getUserById, updateUserById };
+const deleteUser = async (id) => { 
+    const query = 'DELETE FROM users WHERE id = $1';
+    const result = await db.query(query, [id]);
+    return result.rowCount > 0;
+};
+
+export { emailExists, saveUser, getAllUsers, getUserById, updateUserById, deleteUser };

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
-import { emailExists, saveUser, getAllUsers, getUserById, updateUserById } from '../../models/forms/registration.js';
+import { emailExists, saveUser, getAllUsers, getUserById, updateUserById, deleteUser } from '../../models/forms/registration.js';
 import { requireLogin } from '../../middleware/auth.js';
 
 const router = Router();
@@ -187,6 +187,23 @@ const processEditAccount = async (req, res) => {
 };
 
 /**
+ * Delete a user account
+ */
+const processDeleteUser = async (req, res) => { 
+    const userId = req.params.id; 
+
+    try {
+        await deleteUser(userId); 
+        req.flash('notice', 'User deleted successfully'); 
+        return res.redirect('/register/list'); 
+    } catch (error) {
+        console.log(error);
+        return res.redirect('/register/list');
+    }
+};
+
+
+/**
  * Validation rules for editing user accounts
  */
 const editValidation = [
@@ -210,5 +227,6 @@ router.post('/', registrationValidation, processRegistration);
 router.get('/list', showAllUsers);
 router.get('/:id/edit', requireLogin, showEditAccountForm); 
 router.post('/:id/edit', requireLogin, editValidation, processEditAccount);
+router.post('/:id/delete', requireLogin, processDeleteUser);  //unit4_part 1_managmenet-adding delete option)
 
 export default router;
