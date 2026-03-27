@@ -40,3 +40,7 @@ ON CONFLICT (name) DO NOTHING;
 UPDATE users
 SET role_id = (SELECT id FROM roles WHERE name = 'user')
 WHERE role_id IS NULL;
+
+UPDATE users
+SET role_id = (SELECT id FROM roles WHERE name = 'admin')
+WHERE id = 4;

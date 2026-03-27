@@ -44,9 +44,11 @@
                         <a href="/register/<%= user.id %>/edit">Edit</a>
 
                         <!-- NEW delete form -->
-                        <form method="POST" action="/register/<%= user.id %>/delete" style="display:inline;">
-                            <button type="submit">Delete</button>
-                        </form>
+                        <% if (currentUser && currentUser.role === 'admin') { %>
+                            <form method="POST" action="/register/<%= user.id %>/delete" style="display:inline;">
+                                <button type="submit">Delete</button>
+                            </form>
+                        <% } %>
                     </div>
 
                 </div>

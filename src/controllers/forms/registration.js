@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { emailExists, saveUser, getAllUsers, getUserById, updateUserById, deleteUser } from '../../models/forms/registration.js';
-import { requireLogin } from '../../middleware/auth.js';
+import { requireLogin, requireRole } from '../../middleware/auth.js';
 
 const router = Router();
 
@@ -118,7 +118,8 @@ const showAllUsers = async (req, res) => {
 
     res.render('forms/registration/list', {  // TODO: Render the users list view (forms/registration/list)
         title: 'Registered Users',  // TODO: Pass title: 'Registered Users' and the users variable in the data object
-        users
+        users,
+        currentUser: req.session.user
     });
 
 };
@@ -227,6 +228,6 @@ router.post('/', registrationValidation, processRegistration);
 router.get('/list', showAllUsers);
 router.get('/:id/edit', requireLogin, showEditAccountForm); 
 router.post('/:id/edit', requireLogin, editValidation, processEditAccount);
-router.post('/:id/delete', requireLogin, processDeleteUser);  //unit4_part 1_managmenet-adding delete option)
+router.post('/:id/delete', requireLogin, requireRole('admin'), processDeleteUser);  //unit4_part 1_managmenet-adding delete option)
 
 export default router;
